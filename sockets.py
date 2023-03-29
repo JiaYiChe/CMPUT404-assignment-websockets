@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 import flask
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_sockets import Sockets
 import gevent
 from gevent import queue
@@ -82,15 +82,15 @@ def read_ws(ws,client):
     try:
         while True:
             msg = ws.receive()
-            if msg is not None:
+            if msg != None:
                 packet = json.loads(msg)
                 for key in packet:
                     myWorld.set(key, packet[key])
-                client.put(packet)
+                #client.put(packet)
             else:
                 break
     except Exception as e:
-        print(e)
+        print("read_ws error:",e)
     finally:
         client.put(None)
 
@@ -102,14 +102,22 @@ def subscribe_socket(ws):
     client = queue.Queue()
     clients.append(client)
     read = gevent.spawn(read_ws, ws, client)
-    while True:
-        msg = client.get()
-        if msg is not None:
-            ws.send(msg)
-        else:
-            break
-    clients.remove(client)
-    gevent.kill(read)
+
+    ws.send(json.dumps(myWorld.world()))
+    try:
+        while True:
+            msg = client.get()
+
+            if msg is not None:
+                #print(json.dumps(msg))
+                ws.send(json.dumps(msg))
+            else:
+                break
+    except Exception as e:
+        print("this is error:",e)
+    finally:
+        clients.remove(client)
+        gevent.kill(read)
 
 
 # I give this to you, this is how you get the raw body/data portion of a post in flask
@@ -130,7 +138,7 @@ def update(entity):
     data = flask_post_json()
     for key in data:
         myWorld.update(entity, key, data[key])
-    response = {entity:myWorld.get(entity)}
+    response = jsonify( myWorld.get(entity))
 
     return response
 
@@ -138,19 +146,19 @@ def update(entity):
 def world():
     '''you should probably return the world here'''
 
-    return myWorld.world()
+    return jsonify(myWorld.world())
 
 @app.route("/entity/<entity>")    
 def get_entity(entity):
     '''This is the GET version of the entity interface, return a representation of the entity'''
 
-    return myWorld.get(entity)
+    return jsonify(myWorld.get(entity))
 
 
 @app.route("/clear", methods=['POST','GET'])
 def clear():
     '''Clear the world out!'''
-    return myWorld.clear()
+    return jsonify(myWorld.clear())
 
 
 
