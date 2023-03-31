@@ -109,7 +109,6 @@ def subscribe_socket(ws):
             msg = client.get()
 
             if msg is not None:
-                #print(json.dumps(msg))
                 ws.send(json.dumps(msg))
             else:
                 break

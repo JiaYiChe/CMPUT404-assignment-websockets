@@ -20,7 +20,7 @@ pip install -r requirements.txt
 Contributors / Licensing
 ========================
 
-Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
+Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle and JiaYi Che.
 
 freetests.py is LICENSE'D under a BSD-like license:
 
@@ -59,3 +59,13 @@ Contributors
 * Mark Galloway
 * Abram Hindle
 * Cole Mackenzie
+
+
+Reference:
+https://flask-socketio.readthedocs.io/en/latest/getting_started.html
+https://gist.github.com/punchagan/53600958c1799c2dcf26
+https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+https://www.w3schools.com/jsref/api_fetch.asp
+https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+https://github.com/JiaYiChe/CMPUT404-assignment-ajax
+https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
