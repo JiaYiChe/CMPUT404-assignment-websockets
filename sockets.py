@@ -167,4 +167,4 @@ if __name__ == "__main__":
         and run
         gunicorn -k flask_sockets.worker sockets:app
     '''
-    app.run(port=8000)
+    app.run()
